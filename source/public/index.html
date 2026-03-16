@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MalzzPedia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --bs-body-bg-rgb: 248, 249, 250;
+            --bs-tertiary-bg-rgb: 255, 255, 255;
+            --bs-border-color: #dee2e6;
+            --bs-primary-rgb: 106, 17, 203;
+            --bs-primary: #6a11cb;
+            --bs-gradient-primary: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --bs-gradient-secondary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bs-gradient-dark: linear-gradient(135deg, #141E30 0%, #243B55 100%);
+            --bs-gradient-success: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        [data-bs-theme="dark"] {
+            --bs-body-bg-rgb: 13, 17, 23;
+            --bs-tertiary-bg-rgb: 22, 27, 34;
+            --bs-border-color: #30363d;
+            --bs-primary-rgb: 137, 80, 255;
+            --bs-primary: #8950ff;
+            --bs-gradient-primary: linear-gradient(135deg, #8950ff 0%, #2a2d43 100%);
+            --bs-gradient-secondary: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            --bs-gradient-dark: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            --bs-gradient-success: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .gradient-animated {
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: rgb(var(--bs-body-bg-rgb));
+            transition: background-color 0.5s ease;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-top: 0 !important;
+        }
+
+        main {
+            flex-grow: 1;
+            padding-top: 1rem;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(90deg, rgba(var(--bs-primary-rgb), 0.1) 0%, rgba(var(--bs-primary-rgb), 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--bs-border-color);
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Logo Styling */
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--bs-gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .navbar-logo {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Hero Banner Styles */
+        .hero-banner {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border: 1px solid var(--bs-border-color);
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(var(--bs-primary-rgb), 0.1), rgba(var(--bs-primary-rgb), 0.05));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        /* Service Cards */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .service-card {
+            background: rgb(var(--bs-tertiary-bg-rgb));
+            border: 1px solid var(--bs-border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--bs-gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: var(--bs-primary);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--bs-gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .service-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--bs-heading-color);
+        }
+
+        .service-description {
+            color: var(--bs-body-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Special Guide Card */
+        .guide-highlight {
+            background: var(--bs-gradient-primary) !important;
+            color: white;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .guide-highlight::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+        }
+
+        .guide-highlight:hover::after {
+            left: 100%;
+        }
+
+        .guide-highlight .service-icon {
+            background: none;
+            -webkit-text-fill-color: white;
+            color: white;
+        }
+
+        .guide-highlight .service-title,
+        .guide-highlight .service-description {
+            color: white;
+        }
+
+        /* Featured Badge */
+        .featured-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--bs-gradient-success);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        /* Feedback Form */
+        .feedback-form-card {
+            max-width: 650px;
+            margin: 3rem auto;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            background: rgb(var(--bs-tertiary-bg-rgb));
+            border: 1px solid var(--bs-border-color);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .feedback-form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--bs-gradient-primary);
+        }
+
+        .feedback-header {
+            text-align: center;
+            padding: 2rem 2rem 1rem;
+        }
+
+        .feedback-icon {
+            font-size: 3rem;
+            background: var(--bs-gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        /* Footer Styles */
+        .custom-footer {
+            background: rgb(var(--bs-tertiary-bg-rgb));
+            border-top: 1px solid var(--bs-border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .custom-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--bs-gradient-primary);
+        }
+
+        .footer-section h5 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h5::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--bs-gradient-primary);
+            border-radius: 2px;
+        }
+
+        /* Footer Logo */
+        .footer-logo {
+            max-width: 220px;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 1rem;
+            filter: brightness(var(--logo-brightness, 1));
+        }
+
+        /* Social Icons */
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgb(var(--bs-tertiary-bg-rgb));
+            border: 1px solid var(--bs-border-color);
+            color: var(--bs-body-color);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-5px);
+            background: var(--bs-gradient-primary);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 10px 20px rgba(var(--bs-primary-rgb), 0.3);
+        }
+
+        /* Contact Info */
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info i {
+            font-size: 1.2rem;
+            color: var(--bs-primary);
+            width: 24px;
+        }
+
+        /* Theme Toggle */
+        #theme-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgb(var(--bs-tertiary-bg-rgb));
+            border: 1px solid var(--bs-border-color);
+            transition: all 0.3s ease;
+        }
+
+        #theme-toggle:hover {
+            transform: rotate(15deg);
+            background: var(--bs-primary);
+            color: white;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: rgb(var(--bs-tertiary-bg-rgb));
+            border-right: 1px solid var(--bs-border-color);
+            z-index: 1050;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.1);
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            background: var(--bs-gradient-primary);
+            color: white;
+        }
+
+        .sidebar-title {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .sidebar-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--bs-border-color);
+            color: var(--bs-body-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(var(--bs-primary-rgb), 0.1);
+            color: var(--bs-primary);
+            padding-left: 2rem;
+        }
+
+        .sidebar-item i {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1040;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--bs-gradient-primary);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(var(--bs-primary-rgb), 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 25px rgba(var(--bs-primary-rgb), 0.6);
+        }
+
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .loading-dots div {
+            position: absolute;
+            top: 33px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: var(--bs-primary);
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+
+        .loading-dots div:nth-child(1) {
+            left: 8px;
+            animation: loading-dots1 0.6s infinite;
+        }
+
+        .loading-dots div:nth-child(2) {
+            left: 8px;
+            animation: loading-dots2 0.6s infinite;
+        }
+
+        .loading-dots div:nth-child(3) {
+            left: 32px;
+            animation: loading-dots2 0.6s infinite;
+        }
+
+        .loading-dots div:nth-child(4) {
+            left: 56px;
+            animation: loading-dots3 0.6s infinite;
+        }
+
+        @keyframes loading-dots1 {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes loading-dots3 {
+            0% { transform: scale(1); }
+            100% { transform: scale(0); }
+        }
+
+        @keyframes loading-dots2 {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(24px, 0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content {
+                padding: 2rem 1rem;
+            }
+            
+            .service-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .sidebar {
+                width: 280px;
+                left: -280px;
+            }
+            
+            .sidebar-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+            
+            .navbar-logo {
+                height: 40px;
+            }
+            
+            .hero-banner {
+                margin: 1rem 0;
+            }
+            
+            .footer-logo {
+                max-width: 180px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1.3rem;
+            }
+            
+            .navbar-logo {
+                height: 35px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgb(var(--bs-tertiary-bg-rgb));
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bs-gradient-primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--bs-primary), #2575fc);
+        }
+
+        /* Selection Item Enhancement */
+        .selection-item {
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            overflow: hidden;
+            border: 1px solid var(--bs-border-color);
+            background: rgb(var(--bs-tertiary-bg-rgb));
+            position: relative;
+        }
+
+        .selection-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: var(--bs-primary);
+        }
+
+        .selection-item .card-body {
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .selection-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(var(--bs-primary-rgb), 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .selection-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Card Icon Animation */
+        .card-icon {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon i {
+            font-size: 3.5rem;
+            background: var(--bs-gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .selection-item:hover .card-icon i {
+            transform: scale(1.2) rotate(10deg);
+            animation: pulse 1s infinite;
+        }
+
+        /* Card Text Enhancement */
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--bs-heading-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        .card-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--bs-gradient-primary);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .selection-item:hover .card-title::after {
+            width: 80px;
+        }
+
+        .card-text {
+            color: var(--bs-body-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Badge for New Features */
+        .new-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--bs-gradient-success);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: pulse 2s infinite;
+        }
+
+        /* Stats Counter */
+        .stats-counter {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgb(var(--bs-tertiary-bg-rgb));
+            border-radius: 16px;
+            border: 1px solid var(--bs-border-color);
+            min-width: 140px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: var(--bs-primary);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--bs-gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--bs-body-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            background: var(--bs-gradient-primary);
+            color: white;
+            padding: 3rem 1.5rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: newsletter-shine 3s infinite linear;
+        }
+
+        @keyframes newsletter-shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .newsletter-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 2rem auto 0;
+        }
+
+        .newsletter-form .input-group {
+            background: rgba(255,255,255,0.1);
+            border-radius: 50px;
+            padding: 5px;
+            backdrop-filter: blur(10px);
+        }
+
+        .newsletter-form input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 1rem 1.5rem;
+        }
+
+        .newsletter-form input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .newsletter-form button {
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            background: white;
+            color: var(--bs-primary);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1045;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: var(--bs-gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Remove demo button spacing */
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-body">
+    <!-- Animated Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="bi bi-grid-3x3-gap-fill"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">MalzzPedia Menu</h2>
+            <button class="sidebar-close" style="position: absolute; right: 15px; top: 15px; background: none; border: none; color: white; font-size: 1.5rem;">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="sidebar-content p-0">
+            <a href="#" class="sidebar-item" data-type="topup">
+                <i class="bi bi-lightning-charge-fill"></i>
+                <span>Top Up Digital</span>
+            </a>
+            <a href="#" class="sidebar-item" data-type="panel">
+                <i class="bi bi-box-seam-fill"></i>
+                <span>Produk Lainnya</span>
+            </a>
+            <a href="#" class="sidebar-item" data-type="panduan">
+                <i class="bi bi-journal-bookmark-fill"></i>
+                <span>Panduan Membeli</span>
+                <span class="new-badge ms-auto">NEW</span>
+            </a>
+            <div class="mt-4 px-3">
+                <h6 class="text-uppercase text-muted mb-3">Tautan Cepat</h6>
+                <a href="#" class="sidebar-item">
+                    <i class="bi bi-file-text-fill"></i>
+                    <span>Syarat & Ketentuan</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="bi bi-shield-lock-fill"></i>
+                    <span>Kebijakan Privasi</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="bi bi-question-circle-fill"></i>
+                    <span>Pusat Bantuan</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="bi bi-telephone-fill"></i>
+                    <span>Hubungi Kami</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <header class="navbar navbar-expand-lg bg-body-tertiary shadow-sm sticky-top">
+        <nav class="container">
+            <a class="navbar-brand fw-bolder" href="/">
+                <img src="https://i.ibb.co.com/k279yL0f/logo.png" alt="MalzzPedia Logo" class="navbar-logo">
+                <span>MalzzPedia</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <div class="position-relative">
+                    <i class="bi bi-cart3 fs-4 text-primary"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                        3
+                    </span>
+                </div>
+                <button id="theme-toggle" class="btn btn-outline-secondary border-0 fs-5" aria-label="Toggle theme">
+                    <i class="bi bi-sun-fill theme-icon-light"></i>
+                    <i class="bi bi-moon-stars-fill theme-icon-dark"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-4 py-lg-5 animate-fade-in">
+        <!-- Hero Banner -->
+        <section class="hero-banner">
+            <div class="hero-content">
+                <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInDown">
+                    Selamat Datang di <span class="gradient-text">MalzzPedia</span>
+                </h1>
+                <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+                    Platform Top Up Digital Tercepat & Terpercaya di Indonesia
+                </p>
+                <div class="hero-buttons animate__animated animate__fadeInUp animate__delay-2s">
+                    <button class="btn btn-primary btn-lg px-4">
+                        <i class="bi bi-cart-plus me-2"></i>Beli Sekarang
+                    </button>
+                    <!-- Tombol "Lihat Demo" telah dihapus sesuai permintaan -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Counter -->
+        <section class="stats-counter">
+            <div class="stat-item animate__animated animate__fadeInLeft">
+                <div class="stat-number" data-count="100">100+</div>
+                <div class="stat-label">Pengguna Aktif</div>
+            </div>
+            <div class="stat-item animate__animated animate__fadeInUp">
+                <div class="stat-number" data-count="500">500+</div>
+                <div class="stat-label">Transaksi</div>
+            </div>
+            <div class="stat-item animate__animated animate__fadeInRight">
+                <div class="stat-number" data-count="99">99%</div>
+                <div class="stat-label">Kepuasan</div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="mb-5">
+            <div class="text-center mb-5">
+                <h1 class="fw-bold display-5 mb-3">Pilih Layanan Kami</h1>
+                <p class="lead text-body-secondary mb-0">Kami menyediakan berbagai layanan digital untuk memenuhi semua kebutuhan Anda.</p>
+            </div>
+            
+            <div class="service-grid">
+                <!-- Guide Card -->
+                <div class="service-card guide-highlight animate__animated animate__pulse" data-type="panduan">
+                    <div class="featured-badge">POPULER</div>
+                    <div class="service-icon">
+                        <i class="bi bi-journal-bookmark-fill"></i>
+                    </div>
+                    <h3 class="service-title">Panduan Untuk Membeli</h3>
+                    <p class="service-description">
+                        Pelajari cara isi tujuan transaksi dengan benar agar tidak gagal. Panduan lengkap dari awal hingga transaksi berhasil.
+                    </p>
+                    <div class="mt-3">
+                        <span class="badge bg-light text-primary me-2">Step-by-Step</span>
+                        <span class="badge bg-light text-primary">Video Tutorial</span>
+                    </div>
+                </div>
+
+                <!-- Digital Top Up Card -->
+                <div class="service-card animate__animated animate__fadeInUp" data-type="topup">
+                    <div class="service-icon">
+                        <i class="bi bi-phone-vibrate-fill"></i>
+                    </div>
+                    <h3 class="service-title">Top Up Digital</h3>
+                    <p class="service-description">
+                        Top up semua produk digital favoritmu dengan proses cepat, aman, dan harga terbaik di pasaran.
+                    </p>
+                    <div class="mt-3">
+                        <small class="text-success"><i class="bi bi-clock-history me-1"></i> Proses 1 Menit</small>
+                    </div>
+                </div>
+
+                <!-- Other Products Card -->
+                <div class="service-card animate__animated animate__fadeInUp animate__delay-1s" data-type="panel">
+                    <div class="service-icon">
+                        <i class="bi bi-box-seam-fill"></i>
+                    </div>
+                    <h3 class="service-title">Produk Lainnya</h3>
+                    <p class="service-description">
+                        Temukan berbagai produk digital lainnya dengan penawaran spesial dan diskon menarik setiap hari.
+                    </p>
+                    <div class="mt-3">
+                        <span class="badge bg-primary">HOT DEAL</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter-section">
+            <div class="newsletter-content">
+                <h2 class="fw-bold mb-3">Dapatkan Promo Spesial!</h2>
+                <p class="mb-4 opacity-75">Berlangganan newsletter kami untuk mendapatkan promo dan update terbaru.</p>
+                <form class="newsletter-form">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Masukkan email Anda" required>
+                        <button class="btn" type="submit">
+                            <i class="bi bi-send-fill me-2"></i>Berlangganan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Feedback Form -->
+        <section>
+            <div class="feedback-form-card">
+                <div class="feedback-header">
+                    <div class="feedback-icon">
+                        <i class="bi bi-chat-heart-fill"></i>
+                    </div>
+                    <h2 class="fw-bold">Kirim Masukan Anda</h2>
+                    <p class="text-body-secondary">Saran dan kritik Anda sangat berarti bagi kami</p>
+                </div>
+                <div class="card-body p-4 p-lg-5">
+                    <form id="feedbackForm">
+                        <div class="mb-4">
+                            <label for="namaLengkap" class="form-label fw-medium">Nama Lengkap</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-person-fill text-primary"></i></span>
+                                <input type="text" class="form-control border-start-0" id="namaLengkap" placeholder="Masukkan nama lengkap Anda" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="pesanMasukan" class="form-label fw-medium">Pesan Masukan</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 align-items-start pt-3"><i class="bi bi-chat-left-text-fill text-primary"></i></span>
+                                <textarea class="form-control border-start-0" id="pesanMasukan" rows="4" placeholder="Tuliskan masukan, saran, atau kritik Anda di sini..." required></textarea>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" id="sendFeedbackBtn" class="btn btn-primary btn-lg fw-bold py-3">
+                                <span class="btn-text"><i class="bi bi-send-fill me-2"></i>Kirim Masukan</span>
+                            </button>
+                        </div>
+                        <div id="feedbackMessage" class="mt-3"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="custom-footer mt-auto">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0 footer-section">
+                    <h5><i class="bi bi-info-circle-fill me-2"></i>Tentang Kami</h5>
+                    <p class="text-body-secondary">
+                        MalzzPedia adalah platform terdepan untuk top up produk digital. Kami berkomitmen menyediakan layanan yang cepat, aman, dan terpercaya bagi semua pelanggan.
+                    </p>
+                    <div class="mt-4">
+                        <img src="https://i.ibb.co.com/k279yL0f/logo.png" alt="MalzzPedia Logo" class="footer-logo">
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0 footer-section">
+                    <h5><i class="bi bi-link-45deg me-2"></i>Tautan Cepat</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-3"><a href="#" class="text-decoration-none text-body-secondary"><i class="bi bi-chevron-right me-2 text-primary"></i>Syarat & Ketentuan</a></li>
+                        <li class="mb-3"><a href="#" class="text-decoration-none text-body-secondary"><i class="bi bi-chevron-right me-2 text-primary"></i>Kebijakan Privasi</a></li>
+                        <li class="mb-3"><a href="#" class="text-decoration-none text-body-secondary"><i class="bi bi-chevron-right me-2 text-primary"></i>Pusat Bantuan</a></li>
+                        <li><a href="#" class="text-decoration-none text-body-secondary"><i class="bi bi-chevron-right me-2 text-primary"></i>Hubungi Kami</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-12 footer-section">
+                    <h5><i class="bi bi-share-fill me-2"></i>Ikuti & Hubungi Kami</h5>
+                    <div class="social-icons mb-4">
+                        <a href="https://www.youtube.com/c/ipulshopstore" aria-label="YouTube" title="YouTube"><i class="bi bi-youtube"></i></a>
+                        <a href="https://wa.me//6288980873712" aria-label="WhatsApp" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                        <a href="https://t.me/mamakkaudev" aria-label="Telegram" title="Telegram"><i class="bi bi-telegram"></i></a>
+                        <a href="#" aria-label="Instagram" title="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" aria-label="Twitter" title="Twitter"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" aria-label="Facebook" title="Facebook"><i class="bi bi-facebook"></i></a>
+                    </div>
+                    <div class="contact-info">
+                        <p><i class="bi bi-envelope-fill"></i><span>ifuumar794@gmail.com</span></p>
+                        <p><i class="bi bi-telephone-fill"></i><span>+62 889 808 737 12</span></p>
+                        <p><i class="bi bi-geo-alt-fill"></i><span>Jl. Digital No. 123, Jakarta</span></p>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-12 text-center text-body-secondary">
+                    <p class="mb-0">&copy; 2026 MalzzPedia. Semua Hak Cipta Dilindungi.</p>
+                    <p class="mt-2 small">Website ini menggunakan teknologi terkini untuk keamanan dan kenyamanan transaksi Anda.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDjOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        // Theme Management
+        const theme = {
+            init() {
+                this.toggleButton = document.getElementById('theme-toggle');
+                this.applyTheme(localStorage.getItem('theme') || 'light');
+                this.toggleButton.addEventListener('click', () => this.toggle());
+            },
+            applyTheme(themeName) {
+                document.documentElement.setAttribute('data-bs-theme', themeName);
+                localStorage.setItem('theme', themeName);
+                const event = new Event('themeChange');
+                document.getElementById('bg-canvas').dispatchEvent(event);
+                document.documentElement.style.setProperty('--logo-brightness', themeName === 'dark' ? '0.8' : '1');
+            },
+            toggle() { this.applyTheme(document.documentElement.getAttribute('data-bs-theme') === 'light' ? 'dark' : 'light'); }
+        };
+        
+        // Canvas Animation
+        const canvasAnimation = {
+            init() {
+                this.canvas = document.getElementById('bg-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.particleCount = window.innerWidth > 768 ? 80 : 30;
+                this.connectDistance = 120;
+                window.addEventListener('resize', () => this.resize());
+                this.canvas.addEventListener('themeChange', () => this.updateColors());
+                this.resize(); this.animate();
+            },
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                this.particleCount = window.innerWidth > 768 ? 80 : 30;
+                this.particles = [];
+                for (let i = 0; i < this.particleCount; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width, y: Math.random() * this.canvas.height,
+                        dx: (Math.random() - 0.5) * 0.4, dy: (Math.random() - 0.5) * 0.4,
+                        radius: Math.random() * 1.5 + 1,
+                    });
+                }
+                this.updateColors();
+            },
+            updateColors() {
+                this.particleColor = getComputedStyle(document.documentElement).getPropertyValue('--bs-border-color').trim();
+                this.ctx.fillStyle = this.particleColor;
+                this.ctx.strokeStyle = this.particleColor;
+            },
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.updateColors();
+                this.particles.forEach(p => {
+                    p.x += p.dx; p.y += p.dy;
+                    if (p.x < 0 || p.x > this.canvas.width) p.dx *= -1;
+                    if (p.y < 0 || p.y > this.canvas.height) p.dy *= -1;
+                    this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); this.ctx.fill();
+                });
+                for (let i = 0; i < this.particles.length; i++) {
+                    for (let j = i + 1; j < this.particles.length; j++) {
+                        const dist = Math.hypot(this.particles[i].x - this.particles[j].x, this.particles[i].y - this.particles[j].y);
+                        if (dist < this.connectDistance) {
+                            this.ctx.beginPath(); this.ctx.globalAlpha = 1 - dist / this.connectDistance;
+                            this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
+                            this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
+                            this.ctx.stroke();
+                        }
+                    }
+                }
+                this.ctx.globalAlpha = 1; requestAnimationFrame(() => this.animate());
+            }
+        };
+
+        // Sidebar functionality
+        const sidebar = {
+            init() {
+                this.sidebar = document.getElementById('sidebar');
+                this.sidebarToggle = document.getElementById('sidebarToggle');
+                this.sidebarClose = this.sidebar.querySelector('.sidebar-close');
+                this.sidebarOverlay = document.getElementById('sidebarOverlay');
+                
+                this.sidebarToggle.addEventListener('click', () => this.open());
+                this.sidebarClose.addEventListener('click', () => this.close());
+                this.sidebarOverlay.addEventListener('click', () => this.close());
+                
+                // Add click handlers for sidebar items
+                const sidebarItems = this.sidebar.querySelectorAll('.sidebar-item[data-type]');
+                sidebarItems.forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const serviceType = item.dataset.type;
+                        this.navigateToService(serviceType);
+                        this.close();
+                    });
+                });
+                
+                // Close sidebar when pressing Escape key
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') this.close();
+                });
+            },
+            open() {
+                this.sidebar.classList.add('open');
+                this.sidebarOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            },
+            close() {
+                this.sidebar.classList.remove('open');
+                this.sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            },
+            navigateToService(serviceType) {
+                switch (serviceType) {
+                    case 'topup':
+                        window.location.href = '/topup';
+                        break;
+                    case 'panel':
+                        window.location.href = '/products';
+                        break;
+                    case 'panduan':
+                        window.location.href = '/panduan';
+                        break;
+                }
+            }
+        };
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            theme.init();
+            canvasAnimation.init();
+            sidebar.init();
+            
+            // Add animation to service cards
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
+            
+            // Animate stats counter
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-count'));
+                const suffix = stat.textContent.includes('+') ? '+' : 
+                              stat.textContent.includes('%') ? '%' : '';
+                let current = 0;
+                const increment = target / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current) + suffix;
+                }, 20);
+            });
+            
+            // Feedback form submission
+            const feedbackForm = document.getElementById('feedbackForm');
+            const sendFeedbackBtn = document.getElementById('sendFeedbackBtn');
+            const feedbackMessageDiv = document.getElementById('feedbackMessage');
+            
+            feedbackForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const TELEGRAM_BOT_TOKEN = '7597075798:AAHixFTrN-XrKQGi7Zz-SiXrkdNWx3J_2zM';
+                const TELEGRAM_CHAT_ID = '7828002747';
+                const nama = feedbackForm.elements.namaLengkap.value.trim();
+                const pesan = feedbackForm.elements.pesanMasukan.value.trim();
+                
+                if (!nama || !pesan) {
+                    showFeedbackMessage('Nama lengkap dan pesan masukan tidak boleh kosong.', 'danger');
+                    return;
+                }
+                
+                sendFeedbackBtn.disabled = true;
+                sendFeedbackBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Mengirim...';
+                feedbackMessageDiv.classList.add('d-none');
+                
+                const messageText = `<b>🔔 Masukan Baru dari Website Nih  🔔</b>\n\n+  <b>Dari:</b>\n${nama}\n\n+  <b>Pesan:</b>\n${pesan}`;
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            chat_id: TELEGRAM_CHAT_ID,
+                            text: messageText,
+                            parse_mode: 'HTML'
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    if (response.ok && data.ok) {
+                        showFeedbackMessage('✅ Masukan Anda berhasil dikirim! Terima kasih atas feedbacknya.', 'success');
+                        feedbackForm.reset();
+                    } else {
+                        throw new Error(data.description || 'Gagal mengirim pesan ke Telegram.');
+                    }
+                } catch (error) {
+                    showFeedbackMessage('❌ Terjadi kesalahan saat mengirim masukan. Silakan coba lagi nanti.', 'danger');
+                } finally {
+                    sendFeedbackBtn.disabled = false;
+                    sendFeedbackBtn.innerHTML = '<i class="bi bi-send-fill me-2"></i>Kirim Masukan';
+                }
+            });
+
+            function showFeedbackMessage(message, type) {
+                feedbackMessageDiv.textContent = message;
+                feedbackMessageDiv.className = `alert alert-${type} text-center`;
+                feedbackMessageDiv.classList.remove('d-none');
+            }
+            
+            // Add hover effect to all interactive elements
+            const interactiveElements = document.querySelectorAll('button, .service-card, .sidebar-item, .social-icons a');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    el.style.transform = 'translateY(-2px)';
+                });
+                el.addEventListener('mouseleave', () => {
+                    el.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Cart functionality
+            const cartIcon = document.querySelector('.bi-cart3');
+            const cartBadge = document.querySelector('.badge.bg-danger');
+            
+            cartIcon.addEventListener('click', () => {
+                alert('Fitur keranjang belanja akan segera hadir!');
+            });
+        });
+    </script>
+
+    <!-- Tawk.to Script -->
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/68d7f9c384c419194f0dba9d/1j65qf9eq';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+</body>
+</html>
