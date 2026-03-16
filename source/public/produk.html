@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malzz Top Up - Daftar Produk Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #475569;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #6366f1;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: #6366f1;
+            font-weight: 600;
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 8rem 0 4rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+        }
+
+        .header-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            max-width: 1280px;
+            margin: -2rem auto 2rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .filter-container {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 2;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 180px;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Products Grid */
+        .products-section {
+            max-width: 1280px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        /* Loading State */
+        .loading-container {
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #e2e8f0;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .product-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 1.5rem;
+            text-align: center;
+            color: white;
+        }
+
+        .product-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .product-category {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .product-body {
+            padding: 1.5rem;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-desc {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-footer {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-buy {
+            flex: 1;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-buy:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-detail {
+            width: 45px;
+            background: #f1f5f9;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #64748b;
+        }
+
+        .btn-detail:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .empty-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .empty-text {
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+
+        .btn-refresh {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-refresh:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Error State */
+        .error-state {
+            text-align: center;
+            padding: 4rem;
+            background: #fee2e2;
+            border-radius: 20px;
+        }
+
+        .error-icon {
+            font-size: 5rem;
+            color: #ef4444;
+            margin-bottom: 1rem;
+        }
+
+        .error-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #991b1b;
+        }
+
+        .error-text {
+            color: #b91c1c;
+            margin-bottom: 2rem;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        .page-item {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .page-item:hover,
+        .page-item.active {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copyright {
+            color: #94a3b8;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #6366f1;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">Malzz Top Up</a>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Beranda</a>
+                <a href="/products" class="nav-link active">Produk</a>
+                <a href="/topup" class="nav-link">Top Up</a>
+                <a href="/panduan" class="nav-link">Panduan</a>
+                <a href="/status" class="nav-link">Cek Status</a>
+                <a href="/login" class="nav-link">
+                    <i class="fas fa-user-circle"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="header-container">
+            <h1 class="page-title">Daftar Produk Game</h1>
+            <p class="page-subtitle">Pilih game favoritmu, dapatkan harga termurah dan proses tercepat</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Cari produk atau game..." autocomplete="off">
+            </div>
+            <select id="categoryFilter" class="filter-select">
+                <option value="">Semua Kategori</option>
+                <option value="Mobile Legends">Mobile Legends</option>
+                <option value="Free Fire">Free Fire</option>
+                <option value="PUBG">PUBG Mobile</option>
+                <option value="Valorant">Valorant</option>
+                <option value="Genshin Impact">Genshin Impact</option>
+                <option value="COD">COD Mobile</option>
+            </select>
+            <select id="sortFilter" class="filter-select">
+                <option value="default">Sortir</option>
+                <option value="price-asc">Harga Terendah</option>
+                <option value="price-desc">Harga Tertinggi</option>
+                <option value="name-asc">A-Z</option>
+                <option value="name-desc">Z-A</option>
+            </select>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-container">
+            <div class="spinner"></div>
+            <p style="color: #64748b; margin-top: 1rem;">Memuat produk terbaru...</p>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="productsGrid" class="products-grid" style="display: none;"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-box-open"></i>
+            </div>
+            <h3 class="empty-title">Produk Tidak Ditemukan</h3>
+            <p class="empty-text">Maaf, produk yang kamu cari tidak tersedia. Coba kata kunci lain.</p>
+            <button onclick="resetFilters()" class="btn-refresh">
+                <i class="fas fa-sync-alt"></i> Reset Filter
+            </button>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="error-state" style="display: none;">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h3 class="error-title">Gagal Memuat Data</h3>
+            <p class="error-text">Terjadi kesalahan saat mengambil data produk. Silakan coba lagi.</p>
+            <button onclick="loadProducts()" class="btn-refresh">
+                <i class="fas fa-redo-alt"></i> Coba Lagi
+            </button>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="pagination" style="display: none;">
+            <!-- Pagination will be filled by JS -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-copyright">
+                &copy; 2024 Malzz Top Up. All rights reserved.
+            </div>
+            <div class="footer-links">
+                <a href="#">Syarat & Ketentuan</a>
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Bantuan</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let allProducts = [];
+        let filteredProducts = [];
+        let currentPage = 1;
+        const itemsPerPage = 12;
+
+        // Load products from API
+        async function loadProducts() {
+            showLoading();
+            
+            try {
+                const response = await fetch('/api/layanan');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allProducts = result.data.map(product => ({
+                        ...product,
+                        category: getGameCategory(product.name),
+                        icon: getGameIcon(product.name)
+                    }));
+                    filteredProducts = [...allProducts];
+                    displayProducts();
+                    hideLoading();
+                } else {
+                    showError();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError();
+            }
+        }
+
+        // Get game category from product name
+        function getGameCategory(name) {
+            const name_lower = name.toLowerCase();
+            if (name_lower.includes('ml') || name_lower.includes('mobile legends')) return 'Mobile Legends';
+            if (name_lower.includes('ff') || name_lower.includes('free fire')) return 'Free Fire';
+            if (name_lower.includes('pubg')) return 'PUBG Mobile';
+            if (name_lower.includes('valorant')) return 'Valorant';
+            if (name_lower.includes('genshin')) return 'Genshin Impact';
+            if (name_lower.includes('cod')) return 'COD Mobile';
+            return 'Game Lainnya';
+        }
+
+        // Get game icon
+        function getGameIcon(name) {
+            const name_lower = name.toLowerCase();
+            if (name_lower.includes('ml')) return 'fa-skull';
+            if (name_lower.includes('ff')) return 'fa-fire';
+            if (name_lower.includes('pubg')) return 'fa-crosshairs';
+            if (name_lower.includes('valorant')) return 'fa-gun';
+            if (name_lower.includes('genshin')) return 'fa-mountain';
+            if (name_lower.includes('cod')) return 'fa-skull-crossbones';
+            return 'fa-gamepad';
+        }
+
+        // Format price
+        function formatPrice(price) {
+            return new Intl.NumberFormat('id-ID').format(price);
+        }
+
+        // Display products
+        function displayProducts() {
+            const grid = document.getElementById('productsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const pagination = document.getElementById('pagination');
+            
+            if (filteredProducts.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                pagination.style.display = 'none';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            // Pagination
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedProducts = filteredProducts.slice(start, end);
+            
+            grid.innerHTML = paginatedProducts.map(product => `
+                <div class="product-card" onclick="selectProduct('${product.code}', '${product.name}', ${product.price})">
+                    ${product.is_popular ? '<div class="product-badge"><i class="fas fa-star"></i> Populer</div>' : ''}
+                    <div class="product-header">
+                        <div class="product-icon">
+                            <i class="fas ${product.icon}"></i>
+                        </div>
+                        <div class="product-category">${product.category}</div>
+                        <div class="product-name">${product.name}</div>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-price">Rp ${formatPrice(product.price)}</div>
+                        <div class="product-desc">${product.description || 'Top up instant, proses cepat'}</div>
+                        <div class="product-footer">
+                            <button class="btn-buy" onclick="event.stopPropagation(); selectProduct('${product.code}', '${product.name}', ${product.price})">
+                                <i class="fas fa-shopping-cart"></i> Beli
+                            </button>
+                            <button class="btn-detail" onclick="event.stopPropagation(); showDetail('${product.code}')">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update pagination
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            if (totalPages > 1) {
+                pagination.style.display = 'flex';
+                pagination.innerHTML = generatePagination(totalPages);
+            } else {
+                pagination.style.display = 'none';
+            }
+        }
+
+        // Generate pagination
+        function generatePagination(totalPages) {
+            let html = '';
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<div class="page-item ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</div>`;
+            }
+            return html;
+        }
+
+        // Go to page
+        function goToPage(page) {
+            currentPage = page;
+            displayProducts();
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        }
+
+        // Filter products
+        function filterProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+            
+            filteredProducts = allProducts.filter(product => {
+                const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
+                                     product.category.toLowerCase().includes(searchTerm);
+                const matchesCategory = !category || product.category === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            // Sort
+            if (sort === 'price-asc') {
+                filteredProducts.sort((a, b) => a.price - b.price);
+            } else if (sort === 'price-desc') {
+                filteredProducts.sort((a, b) => b.price - a.price);
+            } else if (sort === 'name-asc') {
+                filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+            } else if (sort === 'name-desc') {
+                filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
+            }
+
+            currentPage = 1;
+            displayProducts();
+        }
+
+        // Reset filters
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('sortFilter').value = 'default';
+            filteredProducts = [...allProducts];
+            currentPage = 1;
+            displayProducts();
+        }
+
+        // Select product
+        function selectProduct(code, name, price) {
+            localStorage.setItem('selectedProduct', JSON.stringify({
+                code: code,
+                name: name,
+                price: price
+            }));
+            window.location.href = '/topup';
+        }
+
+        // Show product detail
+        function showDetail(code) {
+            // Implement product detail modal or page
+            alert('Detail produk - dalam pengembangan');
+        }
+
+        // UI States
+        function showLoading() {
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('productsGrid').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'none';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingState').style.display = 'none';
+        }
+
+        function showError() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('productsGrid').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', filterProducts);
+        document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+        document.getElementById('sortFilter').addEventListener('change', filterProducts);
+
+        // Load products on page load
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+</body>
+</html>
