@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malzz Top Up - Pembayaran</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .timer {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .timer i {
+            margin-right: 0.5rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .step-number.active {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            border-color: transparent;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .step-number.completed {
+            background: #10b981;
+            border-color: transparent;
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+            opacity: 0.6;
+        }
+
+        .step-label.active {
+            opacity: 1;
+            font-weight: 600;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 0;
+        }
+
+        .progress-line-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            transition: width 0.3s ease;
+            width: 50%;
+        }
+
+        /* Payment Grid */
+        .payment-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: #6366f1;
+        }
+
+        .method-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .method-tab {
+            flex: 1;
+            padding: 1rem;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .method-tab:hover {
+            border-color: #6366f1;
+        }
+
+        .method-tab.active {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            border-color: transparent;
+            color: white;
+        }
+
+        .method-tab i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .method-tab span {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Virtual Account List */
+        .va-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .va-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .va-item:hover {
+            border-color: #6366f1;
+            background: #f0f4ff;
+        }
+
+        .va-item.selected {
+            border-color: #6366f1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .va-logo {
+            width: 50px;
+            height: 50px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .va-item.selected .va-logo {
+            background: white;
+        }
+
+        .va-info {
+            flex: 1;
+        }
+
+        .va-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .va-desc {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .va-item.selected .va-desc {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-details {
+            margin: 1.5rem 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: #64748b;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .summary-total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 1rem 0;
+        }
+
+        .summary-total .amount {
+            font-size: 1.8rem;
+            color: #6366f1;
+        }
+
+        /* Payment Instructions */
+        .payment-instructions {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .instructions-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .instructions-list {
+            list-style: none;
+        }
+
+        .instructions-list li {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: #475569;
+        }
+
+        .instructions-list li i {
+            color: #10b981;
+            margin-top: 0.2rem;
+        }
+
+        /* Pay Button */
+        .btn-pay {
+            width: 100%;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+            border: none;
+            padding: 1.2rem;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-pay:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 50px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Copy Button */
+        .copy-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .copy-text {
+            flex: 1;
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .copy-btn {
+            background: #6366f1;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #4f46e5;
+            transform: scale(1.05);
+        }
+
+        /* Status Card */
+        .status-card {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .status-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .status-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .status-text {
+            color: #64748b;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-check:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .payment-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .method-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .method-tab {
+                min-width: calc(50% - 0.25rem);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">Malzz Top Up</a>
+            <div class="timer" id="timer">
+                <i class="fas fa-hourglass-half"></i>
+                <span id="countdown">23:59</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-step">
+                    <div class="step-number completed"><i class="fas fa-check"></i></div>
+                    <div class="step-label">Pilih Produk</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number completed"><i class="fas fa-check"></i></div>
+                    <div class="step-label">Detail Order</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number active">3</div>
+                    <div class="step-label active">Pembayaran</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Selesai</div>
+                </div>
+            </div>
+            <div class="progress-line">
+                <div class="progress-line-fill" style="width: 75%"></div>
+            </div>
+        </div>
+
+        <!-- Payment Section -->
+        <div id="paymentSection" class="payment-grid">
+            <!-- Left Column -->
+            <div class="payment-methods">
+                <h2 class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    Pilih Metode Pembayaran
+                </h2>
+
+                <!-- Method Tabs -->
+                <div class="method-tabs">
+                    <div class="method-tab active" onclick="selectMethodTab('va')">
+                        <i class="fas fa-university"></i>
+                        <span>Virtual Account</span>
+                    </div>
+                    <div class="method-tab" onclick="selectMethodTab('ewallet')">
+                        <i class="fas fa-wallet"></i>
+                        <span>E-Wallet</span>
+                    </div>
+                    <div class="method-tab" onclick="selectMethodTab('qris')">
+                        <i class="fas fa-qrcode"></i>
+                        <span>QRIS</span>
+                    </div>
+                    <div class="method-tab" onclick="selectMethodTab('alfamart')">
+                        <i class="fas fa-store"></i>
+                        <span>Alfamart</span>
+                    </div>
+                </div>
+
+                <!-- VA List -->
+                <div id="vaMethods" class="va-list">
+                    <div class="va-item selected" onclick="selectVA('bca')">
+                        <div class="va-logo">BCA</div>
+                        <div class="va-info">
+                            <div class="va-name">Bank BCA</div>
+                            <div class="va-desc">Virtual Account BCA</div>
+                        </div>
+                    </div>
+                    <div class="va-item" onclick="selectVA('mandiri')">
+                        <div class="va-logo">MANDIRI</div>
+                        <div class="va-info">
+                            <div class="va-name">Bank Mandiri</div>
+                            <div class="va-desc">Virtual Account Mandiri</div>
+                        </div>
+                    </div>
+                    <div class="va-item" onclick="selectVA('bni')">
+                        <div class="va-logo">BNI</div>
+                        <div class="va-info">
+                            <div class="va-name">Bank BNI</div>
+                            <div class="va-desc">Virtual Account BNI</div>
+                        </div>
+                    </div>
+                    <div class="va-item" onclick="selectVA('bri')">
+                        <div class="va-logo">BRI</div>
+                        <div class="va-info">
+                            <div class="va-name">Bank BRI</div>
+                            <div class="va-desc">Virtual Account BRI</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Instructions -->
+                <div class="payment-instructions">
+                    <h3 class="instructions-title">
+                        <i class="fas fa-info-circle"></i>
+                        Instruksi Pembayaran
+                    </h3>
+                    <ul class="instructions-list">
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Transfer ke Virtual Account BCA a.n. Malzz Top Up</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Masukkan 16 digit nomor VA di ATM/mBanking</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Konfirmasi nominal yang harus dibayar</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Simpan bukti transfer untuk berjaga-jaga</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- VA Number -->
+                <div class="copy-section">
+                    <div class="copy-text" id="vaNumber">8810 1234 5678 9012</div>
+                    <button class="copy-btn" onclick="copyVANumber()">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <p style="color: #64748b; font-size: 0.85rem; text-align: center;">
+                    <i class="fas fa-clock"></i> Virtual Account akan expired dalam 24 jam
+                </p>
+            </div>
+
+            <!-- Right Column -->
+            <div class="order-summary">
+                <h2 class="section-title">
+                    <i class="fas fa-shopping-bag"></i>
+                    Ringkasan Pesanan
+                </h2>
+
+                <div id="orderDetails"></div>
+
+                <div class="summary-details" id="summaryDetails">
+                    <!-- Filled by JS -->
+                </div>
+
+                <div class="summary-total">
+                    <div>Total Pembayaran</div>
+                    <div class="amount" id="totalAmount">Rp 0</div>
+                </div>
+
+                <button class="btn-pay" onclick="processPayment()">
+                    <i class="fas fa-lock"></i>
+                    Bayar Sekarang
+                </button>
+
+                <p style="text-align: center; margin-top: 1rem; color: #64748b; font-size: 0.85rem;">
+                    <i class="fas fa-shield-alt"></i>
+                    Data terenkripsi SSL 256-bit
+                </p>
+            </div>
+        </div>
+
+        <!-- Waiting Payment Section -->
+        <div id="waitingSection" style="display: none;">
+            <div class="status-card">
+                <div class="status-icon">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <h2 class="status-title">Menunggu Pembayaran</h2>
+                <p class="status-text">
+                    Silakan selesaikan pembayaran sebelum waktu habis.<br>
+                    Setelah pembayaran sukses, pesanan akan diproses otomatis.
+                </p>
+                <div style="font-size: 3rem; font-weight: 800; color: #6366f1; margin: 2rem 0;" id="remainingTime">
+                    23:59
+                </div>
+                <button class="btn-check" onclick="checkPaymentStatus()">
+                    <i class="fas fa-sync-alt"></i>
+                    Cek Status Pembayaran
+                </button>
+            </div>
+        </div>
+
+        <!-- Success Section -->
+        <div id="successSection" style="display: none;">
+            <div class="status-card">
+                <div class="status-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h2 class="status-title">Pembayaran Berhasil!</h2>
+                <p class="status-text">
+                    Terima kasih, pembayaran kamu telah kami terima.<br>
+                    Pesanan sedang diproses, maksimal 5 menit.
+                </p>
+                <div style="background: #f0f4ff; padding: 1rem; border-radius: 15px; margin: 2rem 0;">
+                    <p style="color: #1e293b; margin-bottom: 0.5rem;">ID Transaksi</p>
+                    <p style="font-size: 1.2rem; font-weight: 600; color: #6366f1;" id="transactionId">-</p>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button class="btn-check" onclick="window.location.href='/status'">
+                        <i class="fas fa-search"></i>
+                        Cek Status
+                    </button>
+                    <button class="btn-check" style="background: #f1f5f9; color: #1e293b;" onclick="window.location.href='/'">
+                        <i class="fas fa-home"></i>
+                        Kembali
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let transaction = null;
+        let countdownInterval;
+        let timeLeft = 24 * 60 * 60; // 24 hours in seconds
+
+        // Load transaction data
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTransaction = localStorage.getItem('currentTransaction');
+            
+            if (savedTransaction) {
+                transaction = JSON.parse(savedTransaction);
+                displayOrderSummary();
+                startCountdown();
+                
+                // Check if payment already success
+                checkInitialStatus();
+            } else {
+                window.location.href = '/products';
+            }
+        });
+
+        // Display order summary
+        function displayOrderSummary() {
+            const details = document.getElementById('summaryDetails');
+            details.innerHTML = `
+                <div class="summary-row">
+                    <span class="summary-label">Produk</span>
+                    <span class="summary-value">${transaction.product.name}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Harga Produk</span>
+                    <span class="summary-value">Rp ${formatPrice(transaction.product.price)}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Biaya Layanan</span>
+                    <span class="summary-value">Rp 0</span>
+                </div>
+            `;
+            
+            document.getElementById('totalAmount').textContent = `Rp ${formatPrice(transaction.product.price)}`;
+        }
+
+        // Format price
+        function formatPrice(price) {
+            return new Intl.NumberFormat('id-ID').format(price);
+        }
+
+        // Select method tab
+        function selectMethodTab(tab) {
+            document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        // Select VA
+        function selectVA(bank) {
+            document.querySelectorAll('.va-item').forEach(v => v.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            
+            // Update VA number based on bank
+            const vaNumbers = {
+                'bca': '8810 1234 5678 9012',
+                'mandiri': '8860 1234 5678 9012',
+                'bni': '8840 1234 5678 9012',
+                'bri': '8820 1234 5678 9012'
+            };
+            
+            document.getElementById('vaNumber').textContent = vaNumbers[bank];
+        }
+
+        // Copy VA number
+        function copyVANumber() {
+            const vaNumber = document.getElementById('vaNumber').textContent;
+            navigator.clipboard.writeText(vaNumber);
+            
+            const btn = document.querySelector('.copy-btn');
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => {
+                btn.innerHTML = originalHtml;
+            }, 2000);
+        }
+
+        // Start countdown
+        function startCountdown() {
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('timer').style.background = 'rgba(239, 68, 68, 0.3)';
+                }
+                
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            const seconds = timeLeft % 60;
+            
+            document.getElementById('countdown').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('remainingTime').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Process payment
+        function processPayment() {
+            document.getElementById('paymentSection').style.display = 'none';
+            document.getElementById('waitingSection').style.display = 'block';
+            
+            // Simulate payment check
+            setTimeout(() => {
+                checkPaymentStatus();
+            }, 5000);
+        }
+
+        // Check payment status
+        async function checkPaymentStatus() {
+            try {
+                const response = await fetch(`/api/cek-status-deposit?trxId=${transaction.internalTrxId}`);
+                const result = await response.json();
+                
+                if (result.depositStatus === 'success') {
+                    clearInterval(countdownInterval);
+                    document.getElementById('waitingSection').style.display = 'none';
+                    document.getElementById('successSection').style.display = 'block';
+                    document.getElementById('transactionId').textContent = transaction.internalTrxId;
+                }
+            } catch (error) {
+                console.error('Error checking payment:', error);
+            }
+        }
+
+        // Check initial status
+        async function checkInitialStatus() {
+            try {
+                const response = await fetch(`/api/cek-status-deposit?trxId=${transaction.internalTrxId}`);
+                const result = await response.json();
+                
+                if (result.depositStatus === 'success') {
+                    document.getElementById('paymentSection').style.display = 'none';
+                    document.getElementById('successSection').style.display = 'block';
+                    document.getElementById('transactionId').textContent = transaction.internalTrxId;
+                }
+            } catch (error) {
+                console.error('Error checking initial status:', error);
+            }
+        }
+    </script>
+</body>
+</html>
