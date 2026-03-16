@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malzz Top Up - Panduan Top Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            background: #f8fafc;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #475569;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #6366f1;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 8rem 0 4rem;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1000px;
+            margin: -3rem auto 4rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Quick Steps */
+        .quick-steps {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .step-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 30px;
+            font-size: 2rem;
+            color: #cbd5e1;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-desc {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 0.75rem 2rem;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-tab:hover {
+            border-color: #6366f1;
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            border-color: transparent;
+            color: white;
+        }
+
+        /* Guide Cards */
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .guide-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .guide-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.1);
+        }
+
+        .guide-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .guide-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .guide-excerpt {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .guide-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .section-title span {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 1rem;
+        }
+
+        .faq-question {
+            padding: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 0 1rem 0;
+            color: #64748b;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .faq-answer.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Video Guide */
+        .video-guide {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 30px;
+            padding: 2rem;
+            color: white;
+            margin-top: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .video-content {
+            flex: 1;
+        }
+
+        .video-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .video-text {
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .video-btn {
+            background: white;
+            color: #6366f1;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .video-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-preview {
+            width: 200px;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .video-preview:hover {
+            transform: scale(1.05);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            animation: modalPop 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .step-item:not(:last-child)::after {
+                display: none;
+            }
+            
+            .video-guide {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">Malzz Top Up</a>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Beranda</a>
+                <a href="/products" class="nav-link">Produk</a>
+                <a href="/topup" class="nav-link">Top Up</a>
+                <a href="/panduan" class="nav-link active">Panduan</a>
+                <a href="/status" class="nav-link">Cek Status</a>
+                <a href="/login" class="nav-link">
+                    <i class="fas fa-user-circle"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1 class="hero-title">Panduan Top Up</h1>
+        <p class="hero-subtitle">Cara mudah top up game di Malzz Top Up</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Quick Steps -->
+        <div class="quick-steps">
+            <div class="steps-grid">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Pilih Produk</div>
+                    <div class="step-desc">Cari game favoritmu</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Masukkan ID</div>
+                    <div class="step-desc">Input ID game dengan benar</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Bayar</div>
+                    <div class="step-desc">Transfer sesuai nominal</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Selesai</div>
+                    <div class="step-desc">Diamond masuk otomatis</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <div class="category-tab active" onclick="filterGuide('all')">Semua</div>
+            <div class="category-tab" onclick="filterGuide('ml')">Mobile Legends</div>
+            <div class="category-tab" onclick="filterGuide('ff')">Free Fire</div>
+            <div class="category-tab" onclick="filterGuide('pubg')">PUBG</div>
+            <div class="category-tab" onclick="filterGuide('valorant')">Valorant</div>
+        </div>
+
+        <!-- Guide Grid -->
+        <div class="guide-grid" id="guideGrid">
+            <!-- Mobile Legends -->
+            <div class="guide-card" data-category="ml" onclick="openGuide('ml-basic')">
+                <div class="guide-icon">
+                    <i class="fas fa-skull"></i>
+                </div>
+                <h3 class="guide-title">Cara Top Up Mobile Legends</h3>
+                <p class="guide-excerpt">Panduan lengkap top up diamond Mobile Legends via berbagai metode...</p>
+                <div class="guide-meta">
+                    <span><i class="fas fa-eye"></i> 2.5k views</span>
+                    <span><i class="fas fa-clock"></i> 5 menit</span>
+                </div>
+            </div>
+
+            <div class="guide-card" data-category="ml" onclick="openGuide('ml-id')">
+                <div class="guide-icon">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <h3 class="guide-title">Cara Cek ID Mobile Legends</h3>
+                <p class="guide-excerpt">Langkah-langkah mencari ID dan server Mobile Legends dengan mudah...</p>
+                <div class="guide-meta">
+                    <span><i class="fas fa-eye"></i> 1.8k views</span>
+                    <span><i class="fas fa-clock"></i> 3 menit</span>
+                </div>
+            </div>
+
+            <!-- Free Fire -->
+            <div class="guide-card" data-category="ff" onclick="openGuide('ff-basic')">
+                <div class="guide-icon">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h3 class="guide-title">Cara Top Up Free Fire</h3>
+                <p class="guide-excerpt">Panduan lengkap top up diamond Free Fire termurah dan tercepat...</p>
+                <div class="guide-meta">
+                    <span><i class="fas fa-eye"></i> 2.1k views</span>
+                    <span><i class="fas fa-clock"></i> 4 menit</span>
+                </div>
+            </div>
+
+            <!-- PUBG -->
+            <div class="guide-card" data-category="pubg" onclick="openGuide('pubg-basic')">
+                <div class="guide-icon">
+                    <i class="fas fa-crosshairs"></i>
+                </div>
+                <h3 class="guide-title">Cara Top Up PUBG Mobile</h3>
+                <p class="guide-excerpt">Panduan lengkap top up UC PUBG Mobile dengan harga termurah...</p>
+                <div class="guide-meta">
+                    <span><i class="fas fa-eye"></i> 1.5k views</span>
+                    <span><i class="fas fa-clock"></i> 4 menit</span>
+                </div>
+            </div>
+
+            <!-- Valorant -->
+            <div class="guide-card" data-category="valorant" onclick="openGuide('valorant-basic')">
+                <div class="guide-icon">
+                    <i class="fas fa-gun"></i>
+                </div>
+                <h3 class="guide-title">Cara Top Up Valorant</h3>
+                <p class="guide-excerpt">Panduan lengkap top up Valorant Points untuk skin dan battle pass...</p>
+                <div class="guide-meta">
+                    <span><i class="fas fa-eye"></i> 1.2k views</span>
+                    <span><i class="fas fa-clock"></i> 3 menit</span>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="guide-card" data-category="all" onclick="openGuide('payment')">
+                <div class="guide-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <h3 class="guide-title">Metode Pembayaran</h3>
+                <p class="guide-excerpt">Cara pembayaran via VA, e-wallet, QRIS, dan retail...</p>
+                <div class="guide-meta">
+                    <span><i class="fas fa-eye"></i> 3.2k views</span>
+                    <span><i class="fas fa-clock"></i> 6 menit</span>
+                </div>
+            </div>
+
+            <!-- Troubleshooting -->
+            <div class="guide-card" data-category="all" onclick="openGuide('trouble')">
+                <div class="guide-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="guide-title">Mengatasi Kendala</h3>
+                <p class="guide-excerpt">Solusi jika diamond tidak masuk atau transaksi gagal...</p>
+                <div class="guide-meta">
+                    <span><i class="fas fa-eye"></i> 4.1k views</span>
+                    <span><i class="fas fa-clock"></i> 7 menit</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2 class="section-title">Pertanyaan <span>Umum</span></h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Berapa lama proses top up?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Proses top up otomatis biasanya memakan waktu 1-5 menit setelah pembayaran terkonfirmasi. Untuk metode pembayaran tertentu seperti transfer bank, mungkin membutuhkan waktu hingga 10 menit untuk proses verifikasi.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Bagaimana jika diamond tidak masuk?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Jika diamond tidak masuk dalam 30 menit setelah pembayaran sukses, silakan hubungi customer service kami via WhatsApp atau email dengan menyertakan bukti transfer dan ID transaksi. Kami akan segera memproses refund atau manual top up.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Apakah bisa membatalkan pesanan?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Pesanan yang sudah dibayar tidak dapat dibatalkan karena sistem kami sudah otomatis memproses top up. Pastikan ID game dan jumlah diamond yang dipilih sudah benar sebelum melakukan pembayaran.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Metode pembayaran apa saja yang tersedia?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Kami menerima pembayaran via Virtual Account (BCA, Mandiri, BNI, BRI), E-Wallet (GoPay, OVO, Dana, LinkAja), QRIS, dan Alfamart/Indomart.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Bagaimana cara cek status transaksi?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Kamu bisa cek status transaksi di halaman "Cek Status" dengan memasukkan ID transaksi yang dikirim via email setelah order. Status akan diupdate secara real-time.
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Guide -->
+        <div class="video-guide">
+            <div class="video-content">
+                <h2 class="video-title">Video Tutorial</h2>
+                <p class="video-text">Tonton video tutorial cara top up di Malzz Top Up untuk panduan lebih jelas dan visual.</p>
+                <button class="video-btn" onclick="playVideo()">
+                    <i class="fas fa-play"></i>
+                    Putar Video
+                </button>
+            </div>
+            <div class="video-preview" onclick="playVideo()">
+                <i class="fas fa-play-circle"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="guideModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Panduan Lengkap</h2>
+                <div class="modal-close" onclick="closeModal()">×</div>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be filled by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filter guides
+        function filterGuide(category) {
+            // Update active tab
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Filter cards
+            const cards = document.querySelectorAll('.guide-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Toggle FAQ
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+            const answer = element.nextElementSibling;
+            answer.classList.toggle('show');
+        }
+
+        // Open guide modal
+        function openGuide(guideId) {
+            const modal = document.getElementById('guideModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            // Sample content - replace with actual guide content
+            const guides = {
+                'ml-basic': {
+                    title: 'Cara Top Up Mobile Legends',
+                    content: `
+                        <h3>Langkah 1: Pilih Produk</h3>
+                        <p>Pilih nominal diamond yang diinginkan di halaman produk.</p>
+                        
+                        <h3>Langkah 2: Masukkan ID</h3>
+                        <p>Masukkan ID dan server Mobile Legends kamu dengan benar.</p>
+                        
+                        <h3>Langkah 3: Pilih Metode Pembayaran</h3>
+                        <p>Pilih metode pembayaran yang tersedia (VA, E-Wallet, dll).</p>
+                        
+                        <h3>Langkah 4: Lakukan Pembayaran</h3>
+                        <p>Transfer sesuai nominal yang tertera.</p>
+                        
+                        <h3>Langkah 5: Diamond Masuk</h3>
+                        <p>Diamond akan masuk otomatis maksimal 5 menit.</p>
+                    `
+                },
+                'payment': {
+                    title: 'Metode Pembayaran',
+                    content: `
+                        <h3>Virtual Account (BCA, Mandiri, BNI, BRI)</h3>
+                        <p>Transfer ke nomor VA yang diberikan. Proses verifikasi 1-5 menit.</p>
+                        
+                        <h3>E-Wallet (GoPay, OVO, Dana)</h3>
+                        <p>Pembayaran via aplikasi e-wallet. Verifikasi instan.</p>
+                        
+                        <h3>QRIS</h3>
+                        <p>Scan QR code dengan aplikasi pembayaran yang mendukung QRIS.</p>
+                        
+                        <h3>Alfamart / Indomart</h3>
+                        <p>Tunjukkan kode pembayaran ke kasir. Proses verifikasi 5-10 menit.</p>
+                    `
+                }
+            };
+            
+            const guide = guides[guideId] || {
+                title: 'Panduan',
+                content: '<p>Konten sedang dalam pengembangan.</p>'
+            };
+            
+            modalTitle.textContent = guide.title;
+            modalBody.innerHTML = guide.content;
+            
+            modal.classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('guideModal').classList.remove('active');
+        }
+
+        // Play video
+        function playVideo() {
+            alert('Video tutorial akan segera hadir!');
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('guideModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
